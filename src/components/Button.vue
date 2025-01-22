@@ -1,6 +1,6 @@
 <template>
     <button :style="{ backgroundColor: color }" class="btn" @click="onClick()">
-        {{ title }}
+        {{ text }}
     </button>
 </template>
 
@@ -8,12 +8,12 @@
 export default {
     name: "Button",
     props: {
-        title: String,
+        text: String,
         color: String
     },
     methods: {
         onClick() {
-            console.log("Button Clicked for " + this.title)
+            this.$emit("btn-click")
         }
     }
 }
