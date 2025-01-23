@@ -26,3 +26,4 @@ pnpm-debug.log*
 
 /server/__pycache__/
 /server/venv/
+/server/tasks.db
