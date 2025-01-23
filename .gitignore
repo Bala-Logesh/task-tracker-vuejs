@@ -21,3 +21,8 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Server files
+
+/server/__pycache__/
+/server/venv/
