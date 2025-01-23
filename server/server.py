@@ -63,6 +63,17 @@ class Task(BaseModel):
 def read_api(db: Session = Depends(get_db)):
     return db.query(models.Tasks).all()
 
+@app.get("/{task_id}")
+def read_api(task_id: int, db: Session = Depends(get_db)):
+    task_model = db.query(models.Tasks).filter(models.Tasks.id == task_id).first()
+
+    if task_model is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"ID {task_id} : Does not exist"
+        )
+    
+    return task_model
 
 @app.post("/")
 def create_task(task: Task, db: Session = Depends(get_db)):

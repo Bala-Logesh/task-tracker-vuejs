@@ -3,6 +3,7 @@
 - This application is built using VueJS
 - The backend is built using FastAPI
 - The database is a SQLite database in a file called tasks.db
+- There is a proxy for **/api/** */ from the frontend to backend
 
 ## Running the application
 
