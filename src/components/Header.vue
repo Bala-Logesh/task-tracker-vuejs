@@ -1,7 +1,7 @@
 <template>
     <header>
         <h1>{{ title }}</h1>
-        <Button :text="buttonText" :color="buttonColor" @btn-click="$emit('toggle-add-task')" />
+        <Button v-show="homePage" :text="buttonText" :color="buttonColor" @btn-click="$emit('toggle-add-task')" />
     </header>
 </template>
 
@@ -23,6 +23,9 @@ export default {
         },
         buttonColor() {
             return this.showAddTask ? 'red' : 'green'
+        },
+        homePage() {
+            return this.$route.path === "/"
         }
     },
     emits: [

@@ -1,114 +1,31 @@
 <template>
   <div class="container">
     <Header title="Task Tracker" @toggle-add-task="toggleAddTask" :showAddTask="showAddTask" />
-    <div v-if="showAddTask">
-      <AddTask @add-task="addTask" />
-    </div>
-    <Tasks :tasks="tasks" @delete-task="deleteTask" @toggle-reminder="toggleReminder" />
+    <router-view :showAddTask="showAddTask"></router-view>
+    <Footer />
   </div>
 </template>
 
 <script>
-import AddTask from './components/AddTask.vue';
+import Footer from './components/Footer.vue';
 import Header from './components/Header.vue';
-import Tasks from './components/Tasks.vue';
 
 
 export default {
   name: 'App',
   components: {
     Header,
-    Tasks,
-    AddTask
+    Footer
   },
   data() {
     return {
-      tasks: [],
       showAddTask: false
     }
   },
   methods: {
-    async fetchTasks() {
-      const res = await fetch("api/")
-      const data = await res.json()
-
-      return data
-    },
-    async fetchTask(id) {
-      const res = await fetch(`api/${id}`)
-      const data = await res.json()
-
-      return data
-    },
-    async addTask(newTask) {
-      const res = await fetch("api/", {
-        method: "POST",
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(newTask)
-      })
-
-      const task = await res.json()
-
-      this.tasks = [...this.tasks, task]
-    },
-    async toggleReminder(id) {
-      const taskToToggle = await this.fetchTask(id)
-      const updateTask = {...taskToToggle, reminder: !taskToToggle.reminder}
-
-      const res = await fetch(`api/${id}`, {
-        method: "PUT",
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(updateTask)
-      })
-
-      const updatedTask = await res.json()
-
-      this.tasks = this.tasks.map(task => task.id === id ? {...task, reminder: updatedTask.reminder} : task)
-    },
-    async deleteTask(id) {
-      if (confirm("Are you sure?")) {
-        const res = await fetch(`api/${id}`, {
-          method: "DELETE"
-        })
-
-        if (res.status == 200) {
-          this.tasks = this.tasks.filter(task => task.id !== id)
-        } else {
-          alert("Error deleting task")
-        }
-      }
-    },
     toggleAddTask() {
       this.showAddTask = !this.showAddTask
     },
-  },
-  async created() {
-    // this.tasks = [
-    //   {
-    //     id: 1,
-    //     text: "Doctor's Appointment",
-    //     day: "March 1st at 2.30PM",
-    //     reminder: true
-    //   },
-    //   {
-    //     id: 2,
-    //     text: "Meeting at School",
-    //     day: "March 3rd at 1.30PM",
-    //     reminder: false
-    //   },
-    //   {
-    //     id: 3,
-    //     text: "Food Shopping",
-    //     day: "March 16th at 11.00AM",
-    //     reminder: true
-    //   },
-    // ]
-
-    this.tasks = await this.fetchTasks()
   }
 }
 </script>
